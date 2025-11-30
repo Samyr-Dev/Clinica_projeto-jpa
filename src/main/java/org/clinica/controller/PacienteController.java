@@ -4,8 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class PacienteController {
+
+
 
     //@FXML
     //public TextField txtID;
@@ -20,9 +23,16 @@ public class PacienteController {
 
     @FXML
     protected void onCadastrarPacienteClick(){
+
         System.out.println(this.txtNome.getText() );
         System.out.println(this.txtCPF.getText() );
-        System.out.println(this.txtDataNascimento.getText() );
+
+        String textoData = this.txtDataNascimento.getText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataNascimento = LocalDate.parse(textoData, formatter);
+        System.out.println(dataNascimento);
+
+
         System.out.println(this.txtTelefone.getText() );
 
     }
