@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.controller.PacienteController">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="584.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Pacientes">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Cadastrar Pacientes" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <HBox prefHeight="196.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="235.0" prefWidth="637.0">
+               <children>
+                  <GridPane prefWidth="604.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Nome:" />
+                        <Label text="CPF:" GridPane.rowIndex="2" />
+                        <Label text="Data de Nascimento:" GridPane.rowIndex="4" />
+                        <Label text="Telefone:" GridPane.rowIndex="6" />
+                        <TextField fx:id="txtNome" promptText="Digite o nome do paciente" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtCPF" promptText="Digite o CPF do paciente" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtDataNascimento" promptText="DIgite a data completa do nascimento do paciente" GridPane.rowIndex="5" />
+                        <TextField fx:id="txtTelefone" prefHeight="0.0" prefWidth="587.0" promptText="Digite o telefone do paciente" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="22.0" right="22.0" top="5.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="631.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onCadastrarPacienteClick" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #007BFF;" text="Cadastrar paciente" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #17A2B8;" text="Buscar pacientes" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="208.0" style="-fx-background-color: #FFC107;" text="Atualizar cadastro de paciente" textFill="#212529">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #DC3545;" text="Excluir paciente" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="ID" />
+          <TableColumn prefWidth="191.0" text="NOME" />
+            <TableColumn minWidth="0.0" prefWidth="108.0" text="CPF" />
+            <TableColumn minWidth="0.0" prefWidth="156.0" text="DATA DE NASCIMENTO" />
+            <TableColumn minWidth="0.0" prefWidth="100.0" text="TELEFONE" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
