@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.controller.PacienteController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.controller.PacienteController">
    <children>
       <MenuBar prefHeight="25.0" prefWidth="584.0">
         <menus>
@@ -31,9 +32,9 @@
           </Menu>
         </menus>
       </MenuBar>
-      <HBox prefHeight="196.0" prefWidth="600.0">
+      <HBox prefHeight="347.0" prefWidth="700.0">
          <children>
-            <VBox prefHeight="235.0" prefWidth="637.0">
+            <VBox prefHeight="271.0" prefWidth="703.0">
                <children>
                   <GridPane prefWidth="604.0">
                     <columnConstraints>
@@ -56,12 +57,12 @@
                         <Label text="Telefone:" GridPane.rowIndex="6" />
                         <TextField fx:id="txtNome" promptText="Digite o nome do paciente" GridPane.rowIndex="1" />
                         <TextField fx:id="txtCPF" promptText="Digite o CPF do paciente" GridPane.rowIndex="3" />
-                        <TextField fx:id="txtDataNascimento" promptText="DIgite a data completa do nascimento do paciente" GridPane.rowIndex="5" />
                         <TextField fx:id="txtTelefone" prefHeight="0.0" prefWidth="587.0" promptText="Digite o telefone do paciente" GridPane.rowIndex="7">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
                         </TextField>
+                        <DatePicker prefHeight="25.0" prefWidth="664.0" promptText="Digite a data de nascimento do paciente" GridPane.rowIndex="5" />
                      </children>
                      <VBox.margin>
                         <Insets left="22.0" right="22.0" top="5.0" />
@@ -95,13 +96,13 @@
             </VBox>
          </children>
       </HBox>
-      <TableView prefHeight="200.0" prefWidth="200.0">
+      <TableView prefHeight="280.0" prefWidth="700.0">
         <columns>
           <TableColumn prefWidth="75.0" text="ID" />
           <TableColumn prefWidth="191.0" text="NOME" />
-            <TableColumn minWidth="0.0" prefWidth="108.0" text="CPF" />
-            <TableColumn minWidth="0.0" prefWidth="156.0" text="DATA DE NASCIMENTO" />
-            <TableColumn minWidth="0.0" prefWidth="100.0" text="TELEFONE" />
+            <TableColumn minWidth="0.0" prefWidth="128.0" text="CPF" />
+            <TableColumn minWidth="0.0" prefWidth="162.0" text="DATA DE NASCIMENTO" />
+            <TableColumn minWidth="0.0" prefWidth="143.0" text="TELEFONE" />
         </columns>
       </TableView>
    </children>
