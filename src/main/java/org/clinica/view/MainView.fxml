@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.controller.PacienteController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.dao.PacienteDao">
    <children>
       <MenuBar prefHeight="25.0" prefWidth="584.0">
         <menus>
@@ -62,7 +62,7 @@
                               <Insets />
                            </GridPane.margin>
                         </TextField>
-                        <DatePicker prefHeight="25.0" prefWidth="664.0" promptText="Digite a data de nascimento do paciente" GridPane.rowIndex="5" />
+                         <DatePicker fx:id="txtDataNascimento" prefHeight="25.0" prefWidth="664.0" promptText="Digite a data de nascimento do paciente" GridPane.rowIndex="5" />
                      </children>
                      <VBox.margin>
                         <Insets left="22.0" right="22.0" top="5.0" />
@@ -70,12 +70,12 @@
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="631.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onCadastrarPacienteClick" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #007BFF;" text="Cadastrar paciente" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#onsalvarPacienteClick" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #007BFF;" text="Cadastrar paciente" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #17A2B8;" text="Buscar pacientes" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#onlistarPacientesClick" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #17A2B8;" text="Buscar pacientes" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
@@ -96,13 +96,13 @@
             </VBox>
          </children>
       </HBox>
-      <TableView prefHeight="280.0" prefWidth="700.0">
+      <TableView fx:id="tabelaDados" prefHeight="280.0" prefWidth="700.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID" />
-          <TableColumn prefWidth="191.0" text="NOME" />
-            <TableColumn minWidth="0.0" prefWidth="128.0" text="CPF" />
-            <TableColumn minWidth="0.0" prefWidth="162.0" text="DATA DE NASCIMENTO" />
-            <TableColumn minWidth="0.0" prefWidth="143.0" text="TELEFONE" />
+          <TableColumn fx:id="colunaID" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="colunaNome" prefWidth="191.0" text="NOME" />
+            <TableColumn fx:id="colunaCPF" minWidth="0.0" prefWidth="128.0" text="CPF" />
+            <TableColumn fx:id="colunaDataNascimento" minWidth="0.0" prefWidth="162.0" text="DATA DE NASCIMENTO" />
+            <TableColumn fx:id="colunaTelefone" minWidth="0.0" prefWidth="143.0" text="TELEFONE" />
         </columns>
       </TableView>
    </children>

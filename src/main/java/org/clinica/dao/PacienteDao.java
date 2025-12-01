@@ -1,0 +1,122 @@
+package org.clinica.dao;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.clinica.model.Paciente;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class PacienteDao implements Initializable {
+
+
+    @FXML
+    public TextField txtNome;
+    @FXML
+    public TextField txtCPF;
+    @FXML
+    public DatePicker txtDataNascimento;
+    @FXML
+    public TextField txtTelefone;
+    @FXML
+    private TableColumn<Paciente, Integer> colunaID;
+    @FXML
+    private TableColumn<Paciente, String> colunaNome;
+    @FXML
+    private TableColumn<Paciente, String> colunaCPF;
+    @FXML
+    private TableColumn<Paciente, DatePicker> colunaDataNascimento;
+    @FXML
+    private TableColumn<Paciente, String> colunaTelefone;
+    @FXML
+    private TableView<Paciente> tabelaDados;
+    private int proximoID = 0;
+
+    Paciente paciente;
+    List<Paciente> listaPacientes;
+    ObservableList<Paciente> observableListPacientes;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.paciente = new Paciente();
+        this.listaPacientes = new ArrayList<>();
+        vinculoComTabela();
+    }
+
+    public void vinculoComTabela() {
+        colunaID.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colunaCPF.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+        colunaDataNascimento.setCellValueFactory(new PropertyValueFactory<>("dataNascimento"));
+        colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+    }
+
+    @FXML
+    protected void lerFormulario(){
+
+        this.paciente.setNome(txtNome.getText() );
+        this.paciente.setCpf(txtCPF.getText() );
+        this.paciente.setDataNascimento(txtDataNascimento.getValue());
+        this.paciente.setTelefone(txtTelefone.getText() );
+    }
+
+    public void atualizarTableView() {
+        this.listaPacientes.forEach(obj -> System.out.printf(obj.getNome() + ", " + obj.getCpf() + ", " + obj.getDataNascimento() + ", " + obj.getTelefone() +"\n"));
+        this.observableListPacientes = FXCollections.observableList(this.listaPacientes);
+        this.tabelaDados.setItems(this.observableListPacientes);
+    }
+
+    @FXML
+    protected void onsalvarPacienteClick() {
+
+        //Salva o paciente cadastrado
+        lerFormulario();
+        int novoID = ++proximoID;
+        this.paciente.setID(novoID);
+        this.listaPacientes.add(paciente);
+
+        //Limpa o preenchimento para um novo preenchimento de paciente
+        this.paciente = new Paciente();
+        txtNome.setText("");
+        txtCPF.setText("");
+        txtTelefone.setText("");
+        txtDataNascimento.setValue(null);
+    }
+
+    @FXML
+    protected void onlistarPacientesClick(){
+
+        String nomeBuscado = txtNome.getText();
+
+        if (nomeBuscado == null || nomeBuscado.trim().isEmpty()){
+            atualizarTableView();  //FUNÇÂO PARA LISTAR TODOS PACIENTES CADASTRADOS
+            return;
+        }else {List<Paciente> filtrados = new ArrayList<>();
+
+        for (Paciente p : listaPacientes) {
+            if (p.getNome().equalsIgnoreCase(nomeBuscado.trim())) {
+                filtrados.add(p);
+            }
+        }
+
+        // Converte p/ ObservableList e exibe na tabela
+        ObservableList<Paciente> listaFiltrada =
+                FXCollections.observableArrayList(filtrados);
+
+        tabelaDados.setItems(listaFiltrada);
+    }
+
+    }
+
+}

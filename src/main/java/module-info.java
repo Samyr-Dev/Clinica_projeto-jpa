@@ -3,8 +3,9 @@ module org.clinica {
     requires javafx.fxml;
 
 
-    opens org.clinica.controller to javafx.fxml;
+    opens org.clinica.model to javafx.base;
+    opens org.clinica.dao to javafx.fxml;
     opens org.clinica to javafx.fxml;
     exports org.clinica;
-    exports org.clinica.controller to javafx.fxml;
+    exports org.clinica.dao to javafx.fxml;
 }
