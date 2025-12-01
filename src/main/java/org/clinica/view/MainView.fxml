@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.dao.PacienteDao">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.clinica.dao.PacienteDao">
    <children>
       <MenuBar prefHeight="25.0" prefWidth="584.0">
         <menus>
@@ -34,7 +34,7 @@
       </MenuBar>
       <HBox prefHeight="347.0" prefWidth="700.0">
          <children>
-            <VBox prefHeight="271.0" prefWidth="703.0">
+            <VBox prefHeight="341.0" prefWidth="744.0">
                <children>
                   <GridPane prefWidth="604.0">
                     <columnConstraints>
@@ -49,6 +49,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="Nome:" />
@@ -62,13 +64,15 @@
                               <Insets />
                            </GridPane.margin>
                         </TextField>
-                         <DatePicker fx:id="txtDataNascimento" prefHeight="25.0" prefWidth="664.0" promptText="Digite a data de nascimento do paciente" GridPane.rowIndex="5" />
+                         <DatePicker fx:id="txtDataNascimento" prefHeight="25.0" prefWidth="714.0" promptText="Digite a data de nascimento do paciente" GridPane.rowIndex="5" />
+                        <Label text="ID: " GridPane.rowIndex="8" />
+                        <TextField fx:id="txtID" promptText="Digite o ID (Usado somente para atulização e exclusão)" GridPane.rowIndex="9" />
                      </children>
                      <VBox.margin>
                         <Insets left="22.0" right="22.0" top="5.0" />
                      </VBox.margin>
                   </GridPane>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="631.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="736.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onsalvarPacienteClick" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #007BFF;" text="Cadastrar paciente" textFill="WHITE">
                            <HBox.margin>
@@ -80,12 +84,12 @@
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="208.0" style="-fx-background-color: #FFC107;" text="Atualizar cadastro de paciente" textFill="#212529">
+                        <Button mnemonicParsing="false" onAction="#onAtualizarPacienteClick" prefHeight="32.0" prefWidth="208.0" style="-fx-background-color: #FFC107;" text="Atualizar cadastro de paciente" textFill="#212529">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #DC3545;" text="Excluir paciente" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#onExcluirPacienteClick" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: #DC3545;" text="Excluir paciente" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
@@ -96,7 +100,7 @@
             </VBox>
          </children>
       </HBox>
-      <TableView fx:id="tabelaDados" prefHeight="280.0" prefWidth="700.0">
+      <TableView fx:id="tabelaDados" prefHeight="196.0" prefWidth="740.0">
         <columns>
           <TableColumn fx:id="colunaID" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="colunaNome" prefWidth="191.0" text="NOME" />

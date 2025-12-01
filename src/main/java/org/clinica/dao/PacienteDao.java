@@ -24,6 +24,8 @@ public class PacienteDao implements Initializable {
     @FXML
     public TextField txtNome;
     @FXML
+    public TextField txtID;
+    @FXML
     public TextField txtCPF;
     @FXML
     public DatePicker txtDataNascimento;
@@ -116,6 +118,98 @@ public class PacienteDao implements Initializable {
 
         tabelaDados.setItems(listaFiltrada);
     }
+
+    }
+
+    @FXML
+    protected void onAtualizarPacienteClick(){
+
+        // ID digitado no campo
+        int id = Integer.parseInt(txtID.getText());
+
+        // Procura o paciente na lista
+        Paciente pacienteExistente = null;
+        for (Paciente p : listaPacientes) {
+            if (p.getID() == id) {
+                pacienteExistente = p;
+                break;
+            }
+        }
+
+        // Se não encontrou
+        if (pacienteExistente == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        // Lê dados do formulário
+        lerFormulario();
+
+        // Atualiza os dados do paciente existente
+        pacienteExistente.setNome(paciente.getNome());
+        pacienteExistente.setCpf(paciente.getCpf());
+        pacienteExistente.setTelefone(paciente.getTelefone());
+        pacienteExistente.setDataNascimento(paciente.getDataNascimento());
+
+        System.out.println("Paciente atualizado com sucesso!");
+
+        // Limpa os campos
+        txtID.setText("");
+        txtNome.setText("");
+        txtCPF.setText("");
+        txtTelefone.setText("");
+        txtDataNascimento.setValue(null);
+
+        // Cria novo objeto paciente limpo
+        this.paciente = new Paciente();
+
+        tabelaDados.refresh();
+
+
+    }
+    @FXML
+    protected void onExcluirPacienteClick() {
+        // Verifica se o campo ID está preenchido
+        if (txtID.getText().isEmpty()) {
+            System.out.println("Informe o ID para excluir.");
+            return;
+        }
+
+        int id = Integer.parseInt(txtID.getText());
+
+        Paciente pacienteParaExcluir = null;
+
+        // Procura na lista
+        for (Paciente p : listaPacientes) {
+            if (p.getID() == id) {
+                pacienteParaExcluir = p;
+                break;
+            }
+        }
+
+        // Se não encontrou
+        if (pacienteParaExcluir == null) {
+            System.out.println("Paciente não encontrado!");
+            return;
+        }
+
+        // Remove da lista
+        listaPacientes.remove(pacienteParaExcluir);
+
+        // Atualiza tabela
+        tabelaDados.refresh();
+
+        System.out.println("Paciente removido com sucesso!");
+
+        // Limpa os campos
+        txtID.setText("");
+        txtNome.setText("");
+        txtCPF.setText("");
+        txtTelefone.setText("");
+        txtDataNascimento.setValue(null);
+
+        // Cria novo paciente vazio para evitar reaproveitar dados
+        this.paciente = new Paciente();
 
     }
 
