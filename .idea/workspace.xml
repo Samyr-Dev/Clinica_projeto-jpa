@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="961f9823-b097-49d6-9d73-957a7db9848f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/clinica/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/clinica/controller/PacienteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/clinica/utils/DBConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/clinica/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clinica/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/clinica/dao/PacienteDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clinica/dao/PacienteDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clinica/model/Paciente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clinica/model/Paciente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/clinica/view/MainView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clinica/view/MainView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,17 +64,20 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
     &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestConnection.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/samyr/OneDrive/Documentos/Projetos Programação/Trabalhos faculdade/Prova POO2/Clinica&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

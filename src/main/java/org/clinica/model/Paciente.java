@@ -1,6 +1,7 @@
 package org.clinica.model;
 
 import java.time.LocalDate;
+import java.time.LocalDate;
 
 public class Paciente {
 

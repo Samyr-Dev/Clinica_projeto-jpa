@@ -1,216 +1,155 @@
 package org.clinica.dao;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import org.clinica.model.Paciente;
-
-import java.net.URL;
+import org.clinica.utils.DBConnection; // Importa a classe de conexão que criamos
+import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class PacienteDao implements Initializable {
+public class PacienteDao {
 
+    /**
+     * Busca pacientes no banco de dados, opcionalmente filtrando por nome.
+     * @param nome O nome completo ou parcial a ser buscado. Se vazio/null, lista todos.
+     */
+    public List<Paciente> buscarPorNome(String nome) throws SQLException {
+        List<Paciente> pacientes = new ArrayList<>();
 
-    @FXML
-    public TextField txtNome;
-    @FXML
-    public TextField txtID;
-    @FXML
-    public TextField txtCPF;
-    @FXML
-    public DatePicker txtDataNascimento;
-    @FXML
-    public TextField txtTelefone;
-    @FXML
-    private TableColumn<Paciente, Integer> colunaID;
-    @FXML
-    private TableColumn<Paciente, String> colunaNome;
-    @FXML
-    private TableColumn<Paciente, String> colunaCPF;
-    @FXML
-    private TableColumn<Paciente, DatePicker> colunaDataNascimento;
-    @FXML
-    private TableColumn<Paciente, String> colunaTelefone;
-    @FXML
-    private TableView<Paciente> tabelaDados;
-    private int proximoID = 0;
+        // Se o nome for vazio, buscamos todos os registros
+        boolean buscarTodos = (nome == null || nome.trim().isEmpty());
 
-    Paciente paciente;
-    List<Paciente> listaPacientes;
-    ObservableList<Paciente> observableListPacientes;
+        // SQL BÁSICO: Busca todos os campos e ordena.
+        String sql = "SELECT id, nome, cpf, dataNascimento, telefone FROM pacientes ";
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.paciente = new Paciente();
-        this.listaPacientes = new ArrayList<>();
-        vinculoComTabela();
-    }
+        // Adiciona a cláusula WHERE para filtragem parcial (LIKE)
+        if (!buscarTodos) {
+            // Usamos ILIKE no PostgreSQL para busca case-insensitive (não diferencia maiúsculas/minúsculas)
+            sql += "WHERE nome ILIKE ? ";
+        }
 
-    public void vinculoComTabela() {
-        colunaID.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colunaCPF.setCellValueFactory(new PropertyValueFactory<>("cpf"));
-        colunaDataNascimento.setCellValueFactory(new PropertyValueFactory<>("dataNascimento"));
-        colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
-    }
+        sql += "ORDER BY nome";
 
-    @FXML
-    protected void lerFormulario(){
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        this.paciente.setNome(txtNome.getText() );
-        this.paciente.setCpf(txtCPF.getText() );
-        this.paciente.setDataNascimento(txtDataNascimento.getValue());
-        this.paciente.setTelefone(txtTelefone.getText() );
-    }
+            if (!buscarTodos) {
+                // Adiciona o caractere curinga '%' para busca parcial
+                stmt.setString(1, "%" + nome.trim() + "%");
+            }
 
-    public void atualizarTableView() {
-        this.listaPacientes.forEach(obj -> System.out.printf(obj.getNome() + ", " + obj.getCpf() + ", " + obj.getDataNascimento() + ", " + obj.getTelefone() +"\n"));
-        this.observableListPacientes = FXCollections.observableList(this.listaPacientes);
-        this.tabelaDados.setItems(this.observableListPacientes);
-    }
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nomePaciente = rs.getString("nome");
+                    String cpf = rs.getString("cpf");
+                    LocalDate dataNascimento = rs.getDate("dataNascimento").toLocalDate();
+                    String telefone = rs.getString("telefone");
 
-    @FXML
-    protected void onsalvarPacienteClick() {
-
-        //Salva o paciente cadastrado
-        lerFormulario();
-        int novoID = ++proximoID;
-        this.paciente.setID(novoID);
-        this.listaPacientes.add(paciente);
-
-        //Limpa o preenchimento para um novo preenchimento de paciente
-        this.paciente = new Paciente();
-        txtNome.setText("");
-        txtCPF.setText("");
-        txtTelefone.setText("");
-        txtDataNascimento.setValue(null);
-    }
-
-    @FXML
-    protected void onlistarPacientesClick(){
-
-        String nomeBuscado = txtNome.getText();
-
-        if (nomeBuscado == null || nomeBuscado.trim().isEmpty()){
-            atualizarTableView();  //FUNÇÂO PARA LISTAR TODOS PACIENTES CADASTRADOS
-            return;
-        }else {List<Paciente> filtrados = new ArrayList<>();
-
-        for (Paciente p : listaPacientes) {
-            if (p.getNome().equalsIgnoreCase(nomeBuscado.trim())) {
-                filtrados.add(p);
+                    pacientes.add(new Paciente(id, nomePaciente, cpf, dataNascimento, telefone));
+                }
             }
         }
-
-        // Converte p/ ObservableList e exibe na tabela
-        ObservableList<Paciente> listaFiltrada =
-                FXCollections.observableArrayList(filtrados);
-
-        tabelaDados.setItems(listaFiltrada);
+        return pacientes;
     }
 
+    // O método salvar agora insere dados no PostgreSQL
+    public void salvar(Paciente p) throws SQLException {
+        // Usamos ON CONFLICT DO NOTHING para evitar erro de CPF duplicado,
+        // ou você pode usar INSERT para criar um novo registro.
+        String sql = "INSERT INTO pacientes (nome, cpf, dataNascimento, telefone) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, p.getNome());
+            stmt.setString(2, p.getCpf());
+            stmt.setDate(3, Date.valueOf(p.getDataNascimento()));
+            stmt.setString(4, p.getTelefone());
+            stmt.executeUpdate();
+        }
     }
 
-    @FXML
-    protected void onAtualizarPacienteClick(){
+    // O método listarTodos agora consulta o PostgreSQL
+    public List<Paciente> listarTodos() throws SQLException {
+        List<Paciente> pacientes = new ArrayList<>();
+        String sql = "SELECT id, nome, cpf, dataNascimento, telefone FROM pacientes ORDER BY nome";
 
-        // ID digitado no campo
-        int id = Integer.parseInt(txtID.getText());
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
-        // Procura o paciente na lista
-        Paciente pacienteExistente = null;
-        for (Paciente p : listaPacientes) {
-            if (p.getID() == id) {
-                pacienteExistente = p;
-                break;
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome");
+                String cpf = rs.getString("cpf");
+                LocalDate dataNascimento = rs.getDate("dataNascimento").toLocalDate();
+                String telefone = rs.getString("telefone");
+
+                pacientes.add(new Paciente(id, nome, cpf, dataNascimento, telefone));
             }
         }
-
-        // Se não encontrou
-        if (pacienteExistente == null) {
-            System.out.println("Paciente não encontrado!");
-            return;
-        }
-
-        // Lê dados do formulário
-        lerFormulario();
-
-        // Atualiza os dados do paciente existente
-        pacienteExistente.setNome(paciente.getNome());
-        pacienteExistente.setCpf(paciente.getCpf());
-        pacienteExistente.setTelefone(paciente.getTelefone());
-        pacienteExistente.setDataNascimento(paciente.getDataNascimento());
-
-        System.out.println("Paciente atualizado com sucesso!");
-
-        // Limpa os campos
-        txtID.setText("");
-        txtNome.setText("");
-        txtCPF.setText("");
-        txtTelefone.setText("");
-        txtDataNascimento.setValue(null);
-
-        // Cria novo objeto paciente limpo
-        this.paciente = new Paciente();
-
-        tabelaDados.refresh();
-
-
+        return pacientes;
     }
-    @FXML
-    protected void onExcluirPacienteClick() {
-        // Verifica se o campo ID está preenchido
-        if (txtID.getText().isEmpty()) {
-            System.out.println("Informe o ID para excluir.");
-            return;
-        }
 
-        int id = Integer.parseInt(txtID.getText());
+    // Método para buscar por ID no PostgreSQL
+    public Paciente buscarPorId(int id) throws SQLException {
+        String sql = "SELECT id, nome, cpf, dataNascimento, telefone FROM pacientes WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        Paciente pacienteParaExcluir = null;
-
-        // Procura na lista
-        for (Paciente p : listaPacientes) {
-            if (p.getID() == id) {
-                pacienteParaExcluir = p;
-                break;
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    LocalDate dataNascimento = rs.getDate("dataNascimento").toLocalDate();
+                    return new Paciente(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getString("cpf"),
+                            dataNascimento,
+                            rs.getString("telefone")
+                    );
+                }
             }
         }
-
-        // Se não encontrou
-        if (pacienteParaExcluir == null) {
-            System.out.println("Paciente não encontrado!");
-            return;
-        }
-
-        // Remove da lista
-        listaPacientes.remove(pacienteParaExcluir);
-
-        // Atualiza tabela
-        tabelaDados.refresh();
-
-        System.out.println("Paciente removido com sucesso!");
-
-        // Limpa os campos
-        txtID.setText("");
-        txtNome.setText("");
-        txtCPF.setText("");
-        txtTelefone.setText("");
-        txtDataNascimento.setValue(null);
-
-        // Cria novo paciente vazio para evitar reaproveitar dados
-        this.paciente = new Paciente();
-
+        return null; // Retorna null se não encontrar
     }
 
+    // Método para atualizar no PostgreSQL
+    /**
+     * Atualiza um paciente existente no PostgreSQL.
+     * @return O número de linhas afetadas (0 se o ID não for encontrado).
+     */
+    public int atualizar(Paciente atualizado) throws SQLException {
+        String sql = "UPDATE pacientes SET nome=?, cpf=?, dataNascimento=?, telefone=? WHERE id=?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, atualizado.getNome());
+            stmt.setString(2, atualizado.getCpf());
+            stmt.setDate(3, Date.valueOf(atualizado.getDataNascimento()));
+            stmt.setString(4, atualizado.getTelefone());
+            stmt.setInt(5, atualizado.getID());
+
+            // RETORNA O NÚMERO DE LINHAS AFETADAS
+            return stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Remove um paciente pelo ID no PostgreSQL.
+     * @return O número de linhas afetadas (0 se o ID não for encontrado).
+     */
+    public int excluir(int id) throws SQLException {
+        String sql = "DELETE FROM pacientes WHERE id=?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            // RETORNA O NÚMERO DE LINHAS AFETADAS
+            return stmt.executeUpdate();
+        }
+    }
 }

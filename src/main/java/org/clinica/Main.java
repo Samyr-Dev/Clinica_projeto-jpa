@@ -11,8 +11,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Main extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
+        // Carrega a interface
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(new FileInputStream(PAthFXML.PathFXML() + "\\MainView.fxml"));
         Scene scene = new Scene(root, 740, 556);
@@ -22,6 +24,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+
+        // Inicia JavaFX
         launch();
     }
 }
